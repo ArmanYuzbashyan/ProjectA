@@ -1,0 +1,10 @@
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\ProjectA.exe
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.csprojAssemblyReference.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.AssemblyInfoInputs.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.AssemblyInfo.cs
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.RazorTargetAssemblyInfo.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\staticwebassets\ProjectA.StaticWebAssets.Manifest.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\staticwebassets\ProjectA.StaticWebAssets.xml
