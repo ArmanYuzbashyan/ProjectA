@@ -7,7 +7,7 @@ namespace ProjectA.Models
 {
     public class Country
     {
-        public Guid CountryId { get; set; }
+        public int CountryId { get; set; }
         public string CountryName { get; set; }
         public string Region { get; set; }
 

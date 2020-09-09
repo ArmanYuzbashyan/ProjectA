@@ -23,7 +23,6 @@ namespace ProjectA
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -33,14 +32,18 @@ namespace ProjectA
                 options => options.UseSqlServer(connection));
 
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+               
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, EfCoreContext db)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            db.Database.EnsureCreated();
+            app.UseStaticFiles();
+            //// ?????
+
 
             app.UseHttpsRedirection();
 
