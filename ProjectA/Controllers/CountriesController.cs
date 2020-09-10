@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectA.Models;
-//using ProjectA.Actions;
+using ProjectA.Actions;
 
 namespace ProjectA.Controllers
 {
@@ -24,7 +24,8 @@ namespace ProjectA.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            return await _context.Countries.ToListAsync();
+            var actionObject = new CountryLogic(_context);
+            return await actionObject.Get();            
         }
         
         //[HttpGet("{id}")]
@@ -44,43 +45,31 @@ namespace ProjectA.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountry(int id, Country country)
         {
-            if (id != country.CountryId)
-            {
+            var actionObject = new CountryLogic(_context);
+            var check = await actionObject.Put(id, country);
+            if (!check)
                 return BadRequest();
-            }
-
-            _context.Entry(country).State = EntityState.Modified;
-
-            
-                await _context.SaveChangesAsync();
-            
-            
-
-            return NoContent();
+            return Ok();
         }
         
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
-            _context.Countries.Add(country);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCountry", new { id = country.CountryId }, country);
+            var actionObject = new CountryLogic(_context);
+            var check = await actionObject.Post(country);
+            if (!check)
+                return BadRequest();            
+            return Ok();
         }
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Country>> DeleteCountry(int id)
+        public async Task<ActionResult> DeleteCountry(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
-            {
+            var actionObject = new CountryLogic(_context);
+            var check = await actionObject.Delete(id);
+            if (!check)
                 return NotFound();
-            }
-
-            _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
-
-            return country;
+            return Ok();
         }
     }
 }
