@@ -56,7 +56,7 @@ namespace ProjectA.Actions
                 return true;
             }
             dbCountry.CountryName = country.CountryName;
-            dbCountry.CountryName = country.CountryName;
+            dbCountry.Region = country.Region;
             //_context.Entry(country).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
