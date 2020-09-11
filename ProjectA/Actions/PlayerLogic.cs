@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ProjectA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using ProjectA.DTO;
 
 namespace ProjectA.Actions
 {
@@ -21,15 +22,50 @@ namespace ProjectA.Actions
             var Players = _context.Players.Include(n => n.Nation).ToListAsync();
             return await Players;
         }
-        public async Task<bool> Post(Player player)//// always creating new country
+        public async Task<bool> Post(PlayerDto playerDto)
         {
-            if (player.Nation == null || player.PlayerName == null || player.Position == null)
+            if (playerDto.PlayerName == null || playerDto.Position == null)
             {
                 return false;
             }
+            var playerNation = await _context.Countries.FindAsync(playerDto.NationId);
+            var playerTeam = await _context.Teams.FindAsync(playerDto.TeamId);
+            if (playerNation == null)
+            {
+                return false;
+            }
+            var player = new Player
+            {
+                PlayerName = playerDto.PlayerName,
+                Position = playerDto.Position,
+                Team = playerTeam,
+                Nation = playerNation
+            };
+
             _context.Players.Add(player);
             await _context.SaveChangesAsync();
             return true;
+        }
+        public async Task<bool> Put(int id, PlayerDto playerDto)
+        {
+            if(playerDto.PlayerName == null || playerDto.Position == null)
+            {
+                return false;
+            }
+            var playerNation = await _context.Countries.FindAsync(playerDto.NationId);
+            var playerTeam = await _context.Teams.FindAsync(playerDto.TeamId);
+            if (playerNation == null)
+            {
+                return false;
+            }
+            var player = await _context.Players.FindAsync(id);
+            player.PlayerName = playerDto.PlayerName;
+            player.Position = playerDto.Position;
+            player.Team = playerTeam;
+            player.Nation = playerNation;
+            await _context.SaveChangesAsync();
+            return true;
+
         }
         public async Task<bool> Delete(int id)
         {
@@ -43,6 +79,5 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
-
     }
 }

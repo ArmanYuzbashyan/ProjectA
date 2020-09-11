@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
 using ProjectA.Actions;
+using ProjectA.DTO;
 
 namespace ProjectA.Controllers
 {
@@ -27,12 +28,25 @@ namespace ProjectA.Controllers
             return await actionObject.Get();
         }
         [HttpPost]
-        public async Task<ActionResult> PostPlayer(Player player)
+        public async Task<ActionResult> PostPlayer(PlayerDto playerDto)
         {
             var actionObject = new PlayerLogic(_context);
-            var check = await actionObject.Post(player);
+            var check = await actionObject.Post(playerDto);
             if (!check)
+            {
                 return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPlayer(int id, PlayerDto playerDto)
+        {
+            var actionObject = new PlayerLogic(_context);
+            var check = await actionObject.Put(id, playerDto);
+            if (!check)
+            {
+                return BadRequest();
+            }
             return Ok();
         }
         [HttpDelete("{id}")]
@@ -41,7 +55,9 @@ namespace ProjectA.Controllers
             var actionObject = new PlayerLogic(_context);
             var check = await actionObject.Delete(id);
             if (!check)
+            {
                 return NotFound();
+            }
             return Ok();
         }
     }

@@ -33,7 +33,7 @@ namespace ProjectA.Actions
             return true;
         }
 
-        public async Task<bool> Put (int id, Country country)
+        public async Task<bool> Put (int id, Country country) ///better put function
         {
 
             if (country.CountryName == null && country.Region == null)

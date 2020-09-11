@@ -48,7 +48,9 @@ namespace ProjectA.Controllers
             var actionObject = new CountryLogic(_context);
             var check = await actionObject.Put(id, country);
             if (!check)
+            {
                 return BadRequest();
+            }
             return Ok();
         }
         
@@ -58,7 +60,9 @@ namespace ProjectA.Controllers
             var actionObject = new CountryLogic(_context);
             var check = await actionObject.Post(country);
             if (!check)
-                return BadRequest();            
+            {
+                return BadRequest();
+            }
             return Ok();
         }
         
@@ -68,7 +72,9 @@ namespace ProjectA.Controllers
             var actionObject = new CountryLogic(_context);
             var check = await actionObject.Delete(id);
             if (!check)
+            {
                 return NotFound();
+            }
             return Ok();
         }
     }
