@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
-//using ProjectA.Actions;
+using ProjectA.Actions;
+using ProjectA.DTO;
 
 namespace ProjectA.Controllers
 {
@@ -20,7 +21,25 @@ namespace ProjectA.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Competition>>> GetCompetitions()
+        {
+            var actionObject = new CompetitionLogic(_context);
+            return await actionObject.Get();
+        }
 
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCompetition(int id)
+        {
+            var actionObject = new CompetitionLogic(_context);
+            var check = await actionObject.Delete(id);
+            if (!check)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
 
     }
 }

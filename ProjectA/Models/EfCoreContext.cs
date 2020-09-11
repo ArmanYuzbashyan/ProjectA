@@ -8,8 +8,7 @@ namespace ProjectA.Models
 {
     public class EfCoreContext : DbContext
     {
-        protected override void
-           OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TeamCompetition>()
                 .HasKey(x => new { x.TeamId, x.CompetitionId });

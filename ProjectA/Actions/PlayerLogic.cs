@@ -75,7 +75,6 @@ namespace ProjectA.Actions
                 return false;
             }
             _context.Players.Remove(player);
-
             await _context.SaveChangesAsync();
             return true;
         }
