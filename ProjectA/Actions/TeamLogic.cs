@@ -76,6 +76,10 @@ namespace ProjectA.Actions
                 return false;
             }
             var team = await _context.Teams.FindAsync(id);
+            if (team == null)
+            {
+                return false;
+            }
             team.TeamName = teamDto.TeamName;
             team.ManagerName = teamDto.ManagerName;
             team.TeamCountry = teamCountry;

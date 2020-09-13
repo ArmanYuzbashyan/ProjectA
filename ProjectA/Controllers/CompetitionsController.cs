@@ -27,8 +27,28 @@ namespace ProjectA.Controllers
             var actionObject = new CompetitionLogic(_context);
             return await actionObject.Get();
         }
-
-
+        [HttpPost]
+        public async Task<ActionResult> PostCompetitions(PostCompetitionDto competitionDto)
+        {
+            var actionObject = new CompetitionLogic(_context);
+            var check = await actionObject.Post(competitionDto);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutCompetitions(int id, PostCompetitionDto competitionDto)
+        {
+            var actionObject = new CompetitionLogic(_context);
+            var check = await actionObject.Put(id,competitionDto);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCompetition(int id)
         {
@@ -40,6 +60,5 @@ namespace ProjectA.Controllers
             }
             return Ok();
         }
-
     }
 }

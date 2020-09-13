@@ -25,9 +25,86 @@ namespace ProjectA.Actions
                 .ThenInclude(t => t.Team)
                 .ToListAsync();              
         }
-        public async Task<bool> Post(CompetitionDto competitionDto)
+        public async Task<bool> Post(PostCompetitionDto competitionDto)
         {
-
+            if (competitionDto.CompetitionName == null || competitionDto.Countries.Count == 0)
+            {
+                return false;
+            }
+            if (competitionDto.Global == true && competitionDto.Regional == true)
+            {
+                return false;
+            }
+            var checker = competitionDto.Countries.First().Region;
+            if (competitionDto.Regional == true && competitionDto.Global == false)
+            {                
+            foreach (var c in competitionDto.Countries)
+                {
+                    if (checker != c.Region)
+                    {
+                        return false;
+                    }
+                }
+            }
+            if (competitionDto.Regional == false 
+                && competitionDto.Global == false
+                && competitionDto.Countries.Count > 1)
+            {
+                return false;
+            }
+            var compCountries = new List<Country> { };
+            foreach (var dtoCountries in competitionDto.Countries)
+            {
+                var countryToAdd = await _context.Countries.FindAsync(dtoCountries.CountryId);
+                compCountries.Add(countryToAdd);
+            }
+            if (!compCountries.Any())
+            {
+                return false;
+            }
+            var competition = new Competition
+            {
+                CompetitionName = competitionDto.CompetitionName,
+                Countries = compCountries,
+                Global = competitionDto.Global,
+                Regional = competitionDto.Regional,
+            };
+            _context.Competitions.Add(competition);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> Put (int id , PostCompetitionDto competitionDto)
+        {
+            if (competitionDto.CompetitionName == null || !competitionDto.Countries.Any())
+            {
+                return false;
+            }
+            var competition = await _context.Competitions.FindAsync(id);
+            if (competition == null)
+            {
+                return false;
+            }
+            if (
+                competition.Global != competitionDto.Global 
+                || competition.Regional != competitionDto.Regional
+                )
+            {
+                return false;
+            }
+            var compCountries = new List<Country> { };
+            foreach (var dtoCountries in competitionDto.Countries)
+            {
+                var countryToAdd = await _context.Countries.FindAsync(dtoCountries.CountryId);
+                compCountries.Add(countryToAdd);
+            }
+            if (!compCountries.Any())
+            {
+                return false;
+            }
+            competition.CompetitionName = competitionDto.CompetitionName;
+            competition.Countries = compCountries;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> Delete(int id)

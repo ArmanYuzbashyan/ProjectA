@@ -54,11 +54,15 @@ namespace ProjectA.Actions
             }
             var playerNation = await _context.Countries.FindAsync(playerDto.NationId);
             var playerTeam = await _context.Teams.FindAsync(playerDto.TeamId);
-            if (playerNation == null)
+            if (playerNation == null )
             {
                 return false;
             }
             var player = await _context.Players.FindAsync(id);
+            if (player == null)
+            {
+                return false;
+            }
             player.PlayerName = playerDto.PlayerName;
             player.Position = playerDto.Position;
             player.Team = playerTeam;
