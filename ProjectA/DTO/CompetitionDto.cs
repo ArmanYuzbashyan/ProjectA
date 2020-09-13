@@ -13,6 +13,6 @@ namespace ProjectA.DTO
         public List<Country> Countries { get; set; } = new List<Country> { };
         public bool Global { get; set; }
         public bool Regional { get; set; }
-        public List<CompetitionTeamDto> Competitions { get; set; } = new List<CompetitionTeamDto> { };
+        public List<CompetitionTeamDto> Teams { get; set; } = new List<CompetitionTeamDto> { };
     }
 }

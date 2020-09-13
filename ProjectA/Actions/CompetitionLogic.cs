@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProjectA.DTO;
 using ProjectA.Models;
 
 namespace ProjectA.Actions
@@ -18,15 +19,16 @@ namespace ProjectA.Actions
         }
         public async Task<ActionResult<IEnumerable<Competition>>> Get()
         {
-            var competitions = _context.Competitions
+            return await _context.Competitions
                 .Include(c => c.Countries)
                 .Include(t => t.TeamsLink)
                 .ThenInclude(t => t.Team)
-                .ToListAsync();
-                
-            return await competitions;
+                .ToListAsync();              
         }
+        public async Task<bool> Post(CompetitionDto competitionDto)
+        {
 
+        }
 
         public async Task<bool> Delete(int id)
         {

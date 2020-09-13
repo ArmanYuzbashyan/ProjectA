@@ -17,40 +17,76 @@ namespace ProjectA.Actions
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<Team>>> Get()
+        public async Task<ActionResult<IEnumerable<TeamDto>>> Get()
         {
-            var teams = _context.Teams
+            var teams = await _context.Teams
                 .Include(c => c.CompetitionsLink)
                 .ThenInclude(c => c.Competition)
-                .ToListAsync(); 
-            return await teams;
+                .Include(c =>c.TeamCountry)
+                .ToListAsync();
+            var teamDtos = new List<TeamDto> { };  
+            foreach (var t in teams)
+            {
+                var comptetitions = new List<string> { };
+                foreach (var c in t.CompetitionsLink)
+                {
+                    comptetitions.Add(c.Competition.CompetitionName);
+                }
+                teamDtos.Add(new TeamDto
+                {
+                    TeamId = t.TeamId,
+                    TeamName = t.TeamName,
+                    ManagerName = t.ManagerName,
+                    CountryId = t.TeamCountry.CountryId,
+                    Competitions = comptetitions,
+                });
+            }     
+            return teamDtos;
         }
-        //public async Task<bool> Post(TeamDto teamDto)
-        //{
-        //    if(teamDto.TeamName == null)
-        //    {
-        //        return false;
-        //    }
-        //    var teamCountry = await _context.Countries.FindAsync(teamDto.CountryId);
-        //    if (teamCountry == null)
-        //    {
-        //        return false;
-        //    }
-        //    var teamCompetition =  await _context.Tea
+        public async Task<bool> Post(TeamDto teamDto)
+        {
+            if (teamDto.TeamName == null || teamDto.ManagerName == null)
+            {
+                return false;
+            }
+            var teamCountry = await _context.Countries.FindAsync(teamDto.CountryId);
+            if (teamCountry == null)
+            {
+                return false;
+            }
+            var team = new Team
+            {
+                TeamName = teamDto.TeamName,
+                ManagerName = teamDto.ManagerName,
+                TeamCountry = teamCountry,
+            };
+            _context.Teams.Add(team);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> Put(int id, TeamDto teamDto)
+        {
+            if (teamDto.TeamName == null || teamDto.ManagerName == null)
+            {
+                return false;
+            }
+            var teamCountry = await _context.Countries.FindAsync(teamDto.CountryId);
+            if (teamCountry == null)
+            {
+                return false;
+            }
+            var team = await _context.Teams.FindAsync(id);
+            team.TeamName = teamDto.TeamName;
+            team.ManagerName = teamDto.ManagerName;
+            team.TeamCountry = teamCountry;
 
+            await _context.SaveChangesAsync();
+            return true;
 
-
-        //    var team = new Team
-        //    {
-        //        TeamName = teamDto.TeamName,
-        //        ManagerName = teamDto.Manager,
-        //        TeamCountry = teamCountry,
-        //        CompetitionsLink = 
-        //    }
-
-        //}
-
-
+            //_context.Entry(team).State = EntityState.Modified;
+            //await _context.SaveChangesAsync();
+            //return true;
+        }
         public async Task<bool> Delete(int id)
         {
             var team = await _context.Teams.FindAsync(id);
