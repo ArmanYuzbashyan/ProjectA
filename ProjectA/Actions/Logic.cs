@@ -20,17 +20,26 @@ namespace ProjectA.Actions
         public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
         {
             List<Player> players = new List<Player> { };
-            var competition = await _context.Competitions.FindAsync(id);
+            var competition = await _context.Competitions                
+                .Include(t => t.TeamsLink)
+                .FirstOrDefaultAsync(i => i.CompetitionId == id);
+                
             if(competition == null)
             {
                 return players;
             }
-            var allPlayers = await _context.Players.ToListAsync();
+            var allPlayers = await _context.Players
+                .Include(t => t.Team)
+                .ToListAsync();
+            if(!allPlayers.Any())
+            {
+                return players;
+            }
             foreach (var t in competition.TeamsLink)
             {
                 foreach(var p in allPlayers )
                 {
-                    if (t.Team.TeamId == p.Team.TeamId)
+                    if (t.TeamId == p.Team.TeamId)
                     {
                         players.Add(p);
                     }

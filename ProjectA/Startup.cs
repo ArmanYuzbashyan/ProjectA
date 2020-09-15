@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using ProjectA.Models;
 using Swashbuckle.Swagger;
 
+
 namespace ProjectA
 {
     public class Startup
@@ -32,6 +33,10 @@ namespace ProjectA
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EfCoreContext>(
                 options => options.UseSqlServer(connection));
+            services.AddMvc()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Awesome API", Version = "v1" });

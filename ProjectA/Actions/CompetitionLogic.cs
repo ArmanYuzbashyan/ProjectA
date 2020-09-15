@@ -17,13 +17,42 @@ namespace ProjectA.Actions
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<Competition>>> Get()
+        public async Task<ActionResult<IEnumerable<Competition/*GetCompDto*/>>> Get()
         {
             return await _context.Competitions
                 .Include(c => c.Countries)
-                //.Include(t => t.TeamsLink)
-                //.ThenInclude(t => t.Team)
-                .ToListAsync();              
+                .Include(t => t.TeamsLink)
+                .ThenInclude(t => t.Team)
+                .ToListAsync();
+            //var comps = await _context.Competitions
+            //    .Include(c => c.Countries)
+            //    .Include(t => t.TeamsLink)
+            //    .ThenInclude(tl => tl.TeamId)
+            //    .ToListAsync();
+            //var compList = new List<GetCompDto> { };
+            //foreach(var c in comps)
+            //{
+            //    var countries = new List<string> { };
+            //    var teams = new List<Team> { };
+            //    foreach (var t in c.TeamsLink)
+            //    {
+            //        teams.Add(t.Team);
+            //    }
+            //    foreach( var n in c.Countries)
+            //    {
+            //        countries.Add(n.CountryName);
+            //    }
+            //    compList.Add
+            //        (new GetCompDto {                         
+            //            CompetitionId = c.CompetitionId,
+            //            CompetitionName = c.CompetitionName,
+            //            Countries = countries,
+            //            TeamsLink = teams,
+            //            Global = c.Global,
+            //            Regional = c.Regional }
+            //        );
+            //}
+            //return compList;
         }
         public async Task<bool> Post(PostCompetitionDto competitionDto)
         {

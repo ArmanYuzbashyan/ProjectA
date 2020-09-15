@@ -157,6 +157,9 @@ C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckl
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Web.Http.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.Core.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.csproj.CoreCompileInputs.cache
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.MvcApplicationPartsAssemblyInfo.cache

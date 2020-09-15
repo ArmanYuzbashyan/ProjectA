@@ -22,7 +22,7 @@ namespace ProjectA.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Competition>>> GetCompetitions()
+        public async Task<ActionResult<IEnumerable</*GetCompDto*/Competition>>> GetCompetitions()
         {
             var actionObject = new CompetitionLogic(_context);
             return await actionObject.Get();
