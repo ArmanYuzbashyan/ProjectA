@@ -35,7 +35,7 @@ namespace ProjectA.Controllers
         public async Task<ActionResult> PutTC(int id, TeamDto teamDto)
         {
             var actionObject = new Logic(_context);
-            var check = await actionObject.RemoveTeamToCompetition(id, teamDto);
+            var check = await actionObject.RemoveTeamFromCompetition(id, teamDto);
             if (!check)
             {
                 return NotFound();

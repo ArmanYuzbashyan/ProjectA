@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjectA.Models;
+using Swashbuckle.Swagger;
+
 namespace ProjectA
 {
     public class Startup
@@ -30,6 +32,10 @@ namespace ProjectA
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EfCoreContext>(
                 options => options.UseSqlServer(connection));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Awesome API", Version = "v1" });
+            });
 
         }
                
@@ -54,6 +60,12 @@ namespace ProjectA
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }

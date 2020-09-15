@@ -19,7 +19,10 @@ namespace ProjectA.Actions
         }        
         public async Task<ActionResult<IEnumerable<Player>>> Get()
         {
-            var Players = _context.Players.Include(n => n.Nation).ToListAsync();
+            var Players = _context.Players
+                .Include(n => n.Nation)
+                .Include(t => t.Team)
+                .ToListAsync();
             return await Players;
         }
         public async Task<bool> Post(PlayerDto playerDto)

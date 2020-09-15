@@ -21,8 +21,8 @@ namespace ProjectA.Actions
         {
             return await _context.Competitions
                 .Include(c => c.Countries)
-                .Include(t => t.TeamsLink)
-                .ThenInclude(t => t.Team)
+                //.Include(t => t.TeamsLink)
+                //.ThenInclude(t => t.Team)
                 .ToListAsync();              
         }
         public async Task<bool> Post(PostCompetitionDto competitionDto)

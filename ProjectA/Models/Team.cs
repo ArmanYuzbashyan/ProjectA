@@ -11,6 +11,6 @@ namespace ProjectA.Models
         public string TeamName { get; set; }
         public string ManagerName { get; set; }
         public Country TeamCountry { get; set; }
-        public ICollection<TeamCompetition> CompetitionsLink { get; set; }
+        public ICollection<TeamCompetition> CompetitionsLink { get; set; } = new List<TeamCompetition> { };
     }
 }

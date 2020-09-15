@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectA.Models;
 using ProjectA.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectA.Actions
 {
@@ -16,14 +17,39 @@ namespace ProjectA.Actions
             _context = context;
         }
 
-        //public async Task<IEnumerable<PlayerDto>> GetCompetitionPlayers (int id)
-        //{
-        //    return await ;
-        //}
-        //public async Task<bool> Transfer (int teamId, Player player)
-        //{
-        //    return await;
-        //}
+        public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
+        {
+            List<Player> players = new List<Player> { };
+            var competition = await _context.Competitions.FindAsync(id);
+            if(competition == null)
+            {
+                return players;
+            }
+            var allPlayers = await _context.Players.ToListAsync();
+            foreach (var t in competition.TeamsLink)
+            {
+                foreach(var p in allPlayers )
+                {
+                    if (t.Team.TeamId == p.Team.TeamId)
+                    {
+                        players.Add(p);
+                    }
+                }
+            }
+            return players;
+        }
+        public async Task<bool> Transfer(int teamId, Player playerDto)
+        {
+            var team = await _context.Teams.FindAsync(teamId);
+            var player = await _context.Players.FindAsync(playerDto.PlayerId);
+            if (team == null || player == null)
+            {
+                return false;
+            }
+            player.Team = team;
+            await _context.SaveChangesAsync();
+            return true;
+        }
         public async Task<bool> AddTeamToCompetition (int compId, TeamDto teamDto)
         {
             var team = await _context.Teams.FindAsync(teamDto.TeamId);
@@ -47,7 +73,7 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> RemoveTeamToCompetition(int compId, TeamDto teamDto)
+        public async Task<bool> RemoveTeamFromCompetition(int compId, TeamDto teamDto)
         {
             var team = await _context.Teams.FindAsync(teamDto.TeamId);
             if (team == null)

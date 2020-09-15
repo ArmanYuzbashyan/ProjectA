@@ -150,5 +150,13 @@ C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\zh-Hant\Mi
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.pdb
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.genruntimeconfig.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.Core.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.csproj.CoreCompileInputs.cache
+C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Arman\source\repos\ProjectA\ProjectA\obj\Debug\netcoreapp3.1\ProjectA.MvcApplicationPartsAssemblyInfo.cache

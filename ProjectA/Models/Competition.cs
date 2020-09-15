@@ -14,6 +14,6 @@ namespace ProjectA.Models
         public bool Regional { get; set; }
 
 
-        public ICollection<TeamCompetition> TeamsLink { get; set; } 
+        public ICollection<TeamCompetition> TeamsLink { get; set; } = new List<TeamCompetition> { };
     }
 }
