@@ -45,7 +45,8 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Post(TeamDto teamDto)
         {
-            if (teamDto.TeamName == null || teamDto.ManagerName == null)
+            if (string.IsNullOrWhiteSpace(teamDto.TeamName)
+                || string.IsNullOrWhiteSpace(teamDto.ManagerName))
             {
                 return false;
             }
@@ -66,23 +67,18 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Put(int id, TeamDto teamDto)
         {
-            if (teamDto.TeamName == null || teamDto.ManagerName == null)
+            if (string.IsNullOrWhiteSpace(teamDto.TeamName)
+                || string.IsNullOrWhiteSpace(teamDto.ManagerName))
             {
                 return false;
-            }
-            var teamCountry = await _context.Countries.FindAsync(teamDto.CountryId);
-            if (teamCountry == null)
-            {
-                return false;
-            }
+            }            
             var team = await _context.Teams.FindAsync(id);
             if (team == null)
             {
                 return false;
             }
             team.TeamName = teamDto.TeamName;
-            team.ManagerName = teamDto.ManagerName;
-            team.TeamCountry = teamCountry;
+            team.ManagerName = teamDto.ManagerName;            
 
             await _context.SaveChangesAsync();
             return true;
@@ -99,6 +95,18 @@ namespace ProjectA.Actions
                 return false;
             }
             _context.Teams.Remove(team);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> Transfer(int teamId, Player playerDto)
+        {
+            var team = await _context.Teams.FindAsync(teamId);
+            var player = await _context.Players.FindAsync(playerDto.PlayerId);
+            if (team == null || player == null)
+            {
+                return false;
+            }
+            player.Team = team;
             await _context.SaveChangesAsync();
             return true;
         }

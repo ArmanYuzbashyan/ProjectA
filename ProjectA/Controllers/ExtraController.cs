@@ -12,11 +12,11 @@ namespace ProjectA.Controllers
 {
     [Route("api/playerlogic")]
     [ApiController]
-    public class PlayerLogicController : ControllerBase
+    public class ExtraController : ControllerBase
     {
         private readonly EfCoreContext _context;
 
-        public PlayerLogicController(EfCoreContext context)
+        public ExtraController(EfCoreContext context)
         {
             _context = context;
         }
@@ -24,14 +24,14 @@ namespace ProjectA.Controllers
         [HttpGet("{id}")]
         public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
         {
-            var actionObj = new Logic(_context);
+            var actionObj = new CompetitionLogic(_context);
             return await actionObj.GetCompetitionPlayers(id);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<IEnumerable<Player>>> TransferPlayer(int id, Player player)
         {
-            var actionObj = new Logic(_context);
+            var actionObj = new TeamLogic(_context);
             var check = await actionObj.Transfer(id, player);
             if (!check)
             {

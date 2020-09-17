@@ -10,20 +10,20 @@ using ProjectA.DTO;
 
 namespace ProjectA.Controllers
 {
-    [Route("api/tc")]
+    [Route("api/teamcompetition")]
     [ApiController]
-    public class TCController : ControllerBase
+    public class TeamCompetitionController : ControllerBase
     {
         private readonly EfCoreContext _context;
 
-        public TCController(EfCoreContext context)
+        public TeamCompetitionController(EfCoreContext context)
         {
             _context = context;
         }
         [HttpPost("{id}")]
-        public async Task<ActionResult<bool>> PostTC(int id, TeamDto teamDto)
+        public async Task<ActionResult<bool>> AddTeamToCompetition(int id, TeamDto teamDto)
         {
-            var actionObject = new Logic(_context);
+            var actionObject = new CompetitionLogic(_context);
             var check = await actionObject.AddTeamToCompetition(id, teamDto);
             if (!check)
             {
@@ -32,9 +32,9 @@ namespace ProjectA.Controllers
             return Ok();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutTC(int id, TeamDto teamDto)
+        public async Task<ActionResult> RemoveTeamFromCompetition(int id, TeamDto teamDto)
         {
-            var actionObject = new Logic(_context);
+            var actionObject = new CompetitionLogic(_context);
             var check = await actionObject.RemoveTeamFromCompetition(id, teamDto);
             if (!check)
             {

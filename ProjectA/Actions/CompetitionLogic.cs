@@ -56,7 +56,10 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Post(PostCompetitionDto competitionDto)
         {
-            if (competitionDto.CompetitionName == null || competitionDto.Countries.Count == 0)
+            if (string.IsNullOrWhiteSpace(competitionDto.CompetitionName)
+                || competitionDto.Countries == null
+                || competitionDto.Countries.Count == 0)
+                
             {
                 return false;
             }
@@ -67,7 +70,7 @@ namespace ProjectA.Actions
             var checker = competitionDto.Countries.First().Region;
             if (competitionDto.Regional == true && competitionDto.Global == false)
             {                
-            foreach (var c in competitionDto.Countries)
+                foreach (var c in competitionDto.Countries)
                 {
                     if (checker != c.Region)
                     {
@@ -104,7 +107,7 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Put (int id , PostCompetitionDto competitionDto)
         {
-            if (competitionDto.CompetitionName == null || !competitionDto.Countries.Any())
+            if (string.IsNullOrWhiteSpace(competitionDto.CompetitionName))
             {
                 return false;
             }
@@ -113,25 +116,8 @@ namespace ProjectA.Actions
             {
                 return false;
             }
-            if (
-                competition.Global != competitionDto.Global 
-                || competition.Regional != competitionDto.Regional
-                )
-            {
-                return false;
-            }
-            var compCountries = new List<Country> { };
-            foreach (var dtoCountries in competitionDto.Countries)
-            {
-                var countryToAdd = await _context.Countries.FindAsync(dtoCountries.CountryId);
-                compCountries.Add(countryToAdd);
-            }
-            if (!compCountries.Any())
-            {
-                return false;
-            }
-            competition.CompetitionName = competitionDto.CompetitionName;
-            competition.Countries = compCountries;
+                  
+            competition.CompetitionName = competitionDto.CompetitionName;            
             await _context.SaveChangesAsync();
             return true;
         }
@@ -147,5 +133,63 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> AddTeamToCompetition(int compId, TeamDto teamDto)
+        {
+            var team = await _context.Teams.FindAsync(teamDto.TeamId);
+            if (team == null)
+            {
+                return false;
+            }
+            var competition = await _context.Competitions.FindAsync(compId);
+            if (competition == null)
+            {
+                return false;
+            }
+            if (competition.Global == false
+                && competition.Regional == false
+                && team.TeamCountry != competition.Countries.First())
+            {
+                return false;
+            }
+
+            var relationObj = new TeamCompetition();
+            relationObj.Team = team;
+            relationObj.Competition = competition;
+
+            team.CompetitionsLink.Add(relationObj);
+            competition.TeamsLink.Add(relationObj);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> RemoveTeamFromCompetition(int compId, TeamDto teamDto)
+        {
+            var team = await _context.Teams.FindAsync(teamDto.TeamId);
+            if (team == null)
+            {
+                return false;
+            }
+            var competition = await _context.Competitions.FindAsync(compId);
+            if (competition == null)
+            {
+                return false;
+            }
+            team.CompetitionsLink.Remove(team.CompetitionsLink.FirstOrDefault(c => c.CompetitionId == compId));
+            competition.TeamsLink.Remove(competition.TeamsLink.FirstOrDefault(t => t.TeamId == teamDto.TeamId));
+            return true;
+        }
+
+        public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
+        {
+            return await _context.Competitions
+                .Where(i => i.CompetitionId == id)
+                .SelectMany(tl => tl.TeamsLink)
+                .Select(t => t.Team)
+                .SelectMany(p => p.Players)
+                .ToListAsync();
+        }
+
+
     }
 }

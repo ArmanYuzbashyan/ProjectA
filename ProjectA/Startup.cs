@@ -11,8 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using ProjectA.Models;
-using Swashbuckle.Swagger;
+
 
 
 namespace ProjectA
@@ -28,18 +29,22 @@ namespace ProjectA
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddMvc();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings
+                .ReferenceLoopHandling =
+                Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EfCoreContext>(
                 options => options.UseSqlServer(connection));
-            services.AddMvc()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+
+
+            //????
+            //services.AddScoped<IMyService, MyService>();
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Awesome API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectA", Version = "v1" });
             });
 
         }
@@ -53,8 +58,7 @@ namespace ProjectA
 
             db.Database.EnsureCreated();
             app.UseStaticFiles();
-            //// ?????
-
+            //// ?????            
 
             app.UseHttpsRedirection();
 
@@ -70,7 +74,7 @@ namespace ProjectA
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectA API V1");
             });
         }
     }

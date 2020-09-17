@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectA.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,17 @@ namespace ProjectA.Models
 {
     public class Team
     {
+        public Team()
+        {
+            CompetitionsLink = new HashSet<TeamCompetition>();
+            Players = new HashSet<Player>();
+        }
         public int TeamId { get; set; }
         public string TeamName { get; set; }
         public string ManagerName { get; set; }
         public Country TeamCountry { get; set; }
-        public ICollection<TeamCompetition> CompetitionsLink { get; set; } = new List<TeamCompetition> { };
+
+        public ICollection<Player> Players { get; set; }
+        public ICollection<TeamCompetition> CompetitionsLink { get; set; } 
     }
 }

@@ -27,7 +27,8 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Post(PlayerDto playerDto)
         {
-            if (playerDto.PlayerName == null || playerDto.Position == null)
+            if (string.IsNullOrWhiteSpace(playerDto.PlayerName)
+                || string.IsNullOrWhiteSpace(playerDto.Position ))
             {
                 return false;
             }
@@ -51,7 +52,8 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Put(int id, PlayerDto playerDto)
         {
-            if(playerDto.PlayerName == null || playerDto.Position == null)
+            if (string.IsNullOrWhiteSpace(playerDto.PlayerName)
+                || string.IsNullOrWhiteSpace(playerDto.Position))
             {
                 return false;
             }
@@ -85,5 +87,7 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
+        
+
     }
 }

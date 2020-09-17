@@ -154,9 +154,6 @@ C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
-C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\System.Web.Http.dll
-C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Swashbuckle.Core.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Arman\source\repos\ProjectA\ProjectA\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
