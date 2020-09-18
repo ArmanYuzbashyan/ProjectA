@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectA.Actions
 {
-    public  class CountryLogic
+    public  class CountryLogic : ICountyLogic
     {
         private  readonly EfCoreContext _context;
 
@@ -17,12 +17,12 @@ namespace ProjectA.Actions
             _context = context;
         }
 
-        public async Task<ActionResult<IEnumerable<Country>>> Get()
+        public async Task<ActionResult<IEnumerable<Country>>> GetAll()
         {
            return await _context.Countries.ToListAsync();
         }
 
-        public async Task<bool> Post(Country country)
+        public async Task<bool> Add(Country country)
         {
             if (country.CountryName == null || country.Region == null)
             {
@@ -33,31 +33,23 @@ namespace ProjectA.Actions
             return true;
         }
 
-        public async Task<bool> Put (int id, Country country) ///better put function
+        public async Task<bool> Edit (int id, Country country) ///better put function
         {
 
-            if (country.CountryName == null && country.Region == null)
+            if (string.IsNullOrWhiteSpace(country.CountryName) || string.IsNullOrWhiteSpace(country.Region))
             {
                 return false;
             }
 
             var dbCountry = await _context.Countries.FindAsync(id);
 
-            if (country.Region == null)
+            if (dbCountry == null)
             {
-                dbCountry.CountryName = country.CountryName;
-                await _context.SaveChangesAsync();
-                return true;
+                return false;
             }
-            if (country.CountryName == null)
-            {
-                dbCountry.Region = country.Region;
-                await _context.SaveChangesAsync();
-                return true;
-            }
+            
             dbCountry.CountryName = country.CountryName;
-            dbCountry.Region = country.Region;
-            //_context.Entry(country).State = EntityState.Modified;
+            dbCountry.Region = country.Region;            
             await _context.SaveChangesAsync();
             return true;
         }
@@ -70,7 +62,6 @@ namespace ProjectA.Actions
                 return false;
             }
             _context.Countries.Remove(country);
-
             await _context.SaveChangesAsync();
             return true;
         }

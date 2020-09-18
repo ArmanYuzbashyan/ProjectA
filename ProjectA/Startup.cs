@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProjectA.Models;
+using ProjectA.Actions;
 
 
 
@@ -36,11 +38,10 @@ namespace ProjectA
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EfCoreContext>(
-                options => options.UseSqlServer(connection));
+                options => options.UseSqlServer(connection)) ;
 
-
-            //????
-            //services.AddScoped<IMyService, MyService>();
+            
+            services.AddScoped<ICountyLogic, CountryLogic>();
 
             services.AddSwaggerGen(c =>
             {
@@ -49,17 +50,14 @@ namespace ProjectA
 
         }
                
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, EfCoreContext db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            db.Database.EnsureCreated();
-            app.UseStaticFiles();
-            //// ?????            
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -70,6 +68,15 @@ namespace ProjectA
             {
                 endpoints.MapControllers();
             });
+
+            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var serviceScope = serviceScopeFactory.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetService<EfCoreContext>();
+                dbContext.Database.EnsureCreated();
+            }
+
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

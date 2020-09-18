@@ -10,7 +10,7 @@ using ProjectA.DTO;
 
 namespace ProjectA.Controllers
 {
-    [Route("api/playerlogic")]
+    [Route("api/extra")]
     [ApiController]
     public class ExtraController : ControllerBase
     {

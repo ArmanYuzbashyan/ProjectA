@@ -8,45 +8,30 @@ using Microsoft.EntityFrameworkCore;
 using ProjectA.Models;
 using ProjectA.Actions;
 
+
 namespace ProjectA.Controllers
 {
     [Route("api/countries")]
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly EfCoreContext _context;
+        private readonly ICountyLogic _countries;        
 
-        public CountriesController(EfCoreContext context)
+        public CountriesController( ICountyLogic countries)
         {
-            _context = context;
+            _countries = countries;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            var actionObject = new CountryLogic(_context);
-            return await actionObject.Get();
+            return await _countries.GetAll();
         }
-
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Country>> GetCountry(int id)
-        //{
-        //    var country = await _context.Countries.FindAsync(id);
-
-        //    if (country == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return country;
-        //}
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountry(int id, Country country)
         {
-            var actionObject = new CountryLogic(_context);
-            var check = await actionObject.Put(id, country);
+            var check = await _countries.Edit(id, country);
             if (!check)
             {
                 return BadRequest();
@@ -56,9 +41,8 @@ namespace ProjectA.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(Country country)
-        {
-            var actionObject = new CountryLogic(_context);
-            var check = await actionObject.Post(country);
+        {            
+            var check = await _countries.Add(country);
             if (!check)
             {
                 return BadRequest();
@@ -69,8 +53,7 @@ namespace ProjectA.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCountry(int id)
         {
-            var actionObject = new CountryLogic(_context);
-            var check = await actionObject.Delete(id);
+            var check = await _countries.Delete(id);
             if (!check)
             {
                 return NotFound();
