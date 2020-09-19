@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectA.Actions
 {
-    public interface ICountyLogic
+    public interface ICountryLogic
     {
         Task<ActionResult<IEnumerable<Country>>> GetAll();
         Task<bool> Add(Country country);

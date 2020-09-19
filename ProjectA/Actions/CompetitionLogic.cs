@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProjectA.Actions.Abstraction;
 using ProjectA.DTO;
 using ProjectA.Models;
 
 namespace ProjectA.Actions
 {
-    public class CompetitionLogic
+    public class CompetitionLogic : ICompetitionLogic
     {
         private readonly EfCoreContext _context;
 
@@ -17,7 +18,7 @@ namespace ProjectA.Actions
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<Competition/*GetCompDto*/>>> Get()
+        public async Task<ActionResult<IEnumerable<Competition/*GetCompDto*/>>> GetAll()
         {
             return await _context.Competitions
                 .Include(c => c.Countries)
@@ -54,7 +55,7 @@ namespace ProjectA.Actions
             //}
             //return compList;
         }
-        public async Task<bool> Post(PostCompetitionDto competitionDto)
+        public async Task<bool> Add(PostCompetitionDto competitionDto)
         {
             if (string.IsNullOrWhiteSpace(competitionDto.CompetitionName)
                 || competitionDto.Countries == null
@@ -105,7 +106,7 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> Put (int id , PostCompetitionDto competitionDto)
+        public async Task<bool> Edit (int id , PostCompetitionDto competitionDto)
         {
             if (string.IsNullOrWhiteSpace(competitionDto.CompetitionName))
             {
@@ -189,7 +190,5 @@ namespace ProjectA.Actions
                 .SelectMany(p => p.Players)
                 .ToListAsync();
         }
-
-
     }
 }

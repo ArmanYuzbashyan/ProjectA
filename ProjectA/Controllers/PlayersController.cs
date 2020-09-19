@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
 using ProjectA.Actions;
 using ProjectA.DTO;
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Controllers
 {
@@ -15,45 +16,45 @@ namespace ProjectA.Controllers
 
     public class PlayersController : ControllerBase
     {
-        private readonly EfCoreContext _context;
+        private readonly IPlayerLogic _playerLogic;
 
-        public PlayersController(EfCoreContext context)
+        public PlayersController(IPlayerLogic playerLogic)
         {
-            _context = context;
+            _playerLogic = playerLogic;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            var actionObject = new PlayerLogic(_context);
-            return await actionObject.Get();
+            return await _playerLogic.GetAll();
         }
+
         [HttpPost]
-        public async Task<ActionResult> PostPlayer(PlayerDto playerDto)
+        public async Task<ActionResult> AddPlayer(PlayerDto playerDto)
         {
-            var actionObject = new PlayerLogic(_context);
-            var check = await actionObject.Post(playerDto);
+            var check = await _playerLogic.Add(playerDto);
             if (!check)
             {
                 return BadRequest();
             }
             return Ok();
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, PlayerDto playerDto)
         {
-            var actionObject = new PlayerLogic(_context);
-            var check = await actionObject.Put(id, playerDto);
+           var check = await _playerLogic.Edit(id, playerDto);
             if (!check)
             {
                 return BadRequest();
             }
             return Ok();
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCountry(int id)
         {
-            var actionObject = new PlayerLogic(_context);
-            var check = await actionObject.Delete(id);
+            var check = await _playerLogic.Delete(id);
             if (!check)
             {
                 return NotFound();

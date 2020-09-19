@@ -15,8 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProjectA.Models;
 using ProjectA.Actions;
-
-
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA
 {
@@ -41,7 +40,10 @@ namespace ProjectA
                 options => options.UseSqlServer(connection)) ;
 
             
-            services.AddScoped<ICountyLogic, CountryLogic>();
+            services.AddScoped<ICountryLogic, CountryLogic>();
+            services.AddScoped<ICompetitionLogic, CompetitionLogic>();
+            services.AddScoped<IPlayerLogic, PlayerLogic>();
+            services.AddScoped<ITeamLogic, TeamLogic>();
 
             services.AddSwaggerGen(c =>
             {

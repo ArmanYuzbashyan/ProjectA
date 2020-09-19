@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectA.Actions
 {
-    public  class CountryLogic : ICountyLogic
+    public  class CountryLogic : ICountryLogic
     {
         private  readonly EfCoreContext _context;
 
@@ -33,7 +33,7 @@ namespace ProjectA.Actions
             return true;
         }
 
-        public async Task<bool> Edit (int id, Country country) ///better put function
+        public async Task<bool> Edit(int id, Country country) ///better put function
         {
 
             if (string.IsNullOrWhiteSpace(country.CountryName) || string.IsNullOrWhiteSpace(country.Region))

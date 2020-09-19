@@ -15,9 +15,9 @@ namespace ProjectA.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly ICountyLogic _countries;        
+        private readonly ICountryLogic _countries;        
 
-        public CountriesController( ICountyLogic countries)
+        public CountriesController( ICountryLogic countries)
         {
             _countries = countries;
         }

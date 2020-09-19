@@ -6,10 +6,11 @@ using ProjectA.Models;
 using ProjectA.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Actions
 {
-    public class TeamLogic
+    public class TeamLogic : ITeamLogic
     {
         private readonly EfCoreContext _context;
 
@@ -17,14 +18,14 @@ namespace ProjectA.Actions
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<TeamDto>>> Get()
+        public async Task<ActionResult<IEnumerable<TeamDto>>> GetAll()
         {
             var teams = await _context.Teams
                 .Include(c => c.CompetitionsLink)
                 .ThenInclude(c => c.Competition)
                 .Include(c =>c.TeamCountry)
                 .ToListAsync();
-            var teamDtos = new List<TeamDto> { };  
+            var teamDtos = new List<TeamDto> { };
             foreach (var t in teams)
             {
                 var comptetitions = new List<string> { };
@@ -40,10 +41,10 @@ namespace ProjectA.Actions
                     CountryId = t.TeamCountry.CountryId,
                     Competitions = comptetitions,
                 });
-            }     
-            return teamDtos;
+            }
+            return  teamDtos;
         }
-        public async Task<bool> Post(TeamDto teamDto)
+        public async Task<bool> Add(TeamDto teamDto)
         {
             if (string.IsNullOrWhiteSpace(teamDto.TeamName)
                 || string.IsNullOrWhiteSpace(teamDto.ManagerName))
@@ -65,7 +66,7 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> Put(int id, TeamDto teamDto)
+        public async Task<bool> Edit(int id, TeamDto teamDto)
         {
             if (string.IsNullOrWhiteSpace(teamDto.TeamName)
                 || string.IsNullOrWhiteSpace(teamDto.ManagerName))

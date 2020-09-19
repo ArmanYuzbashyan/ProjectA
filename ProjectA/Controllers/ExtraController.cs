@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
 using ProjectA.Actions;
 using ProjectA.DTO;
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Controllers
 {
@@ -14,31 +15,30 @@ namespace ProjectA.Controllers
     [ApiController]
     public class ExtraController : ControllerBase
     {
-        private readonly EfCoreContext _context;
+        private readonly ICompetitionLogic _competitionLogic;
+        private readonly ITeamLogic _teamLogic;
 
-        public ExtraController(EfCoreContext context)
+        public ExtraController(ICompetitionLogic competitionLogic, ITeamLogic teamLogic)
         {
-            _context = context;
+            _competitionLogic = competitionLogic;
+            _teamLogic = teamLogic;
         }
 
         [HttpGet("{id}")]
         public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
         {
-            var actionObj = new CompetitionLogic(_context);
-            return await actionObj.GetCompetitionPlayers(id);
+            return await _competitionLogic.GetCompetitionPlayers(id);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<IEnumerable<Player>>> TransferPlayer(int id, Player player)
         {
-            var actionObj = new TeamLogic(_context);
-            var check = await actionObj.Transfer(id, player);
+            var check = await _teamLogic.Transfer(id, player);
             if (!check)
             {
                 return BadRequest();
             }
             return Ok();
         }
-
     }
 }

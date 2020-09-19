@@ -6,10 +6,11 @@ using ProjectA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using ProjectA.DTO;
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Actions
 {
-    public  class PlayerLogic
+    public  class PlayerLogic : IPlayerLogic
     {
         private readonly EfCoreContext _context;
 
@@ -17,7 +18,7 @@ namespace ProjectA.Actions
         {
             _context = context;
         }        
-        public async Task<ActionResult<IEnumerable<Player>>> Get()
+        public async Task<ActionResult<IEnumerable<Player>>> GetAll()
         {
             var Players = _context.Players
                 .Include(n => n.Nation)
@@ -25,7 +26,7 @@ namespace ProjectA.Actions
                 .ToListAsync();
             return await Players;
         }
-        public async Task<bool> Post(PlayerDto playerDto)
+        public async Task<bool> Add(PlayerDto playerDto)
         {
             if (string.IsNullOrWhiteSpace(playerDto.PlayerName)
                 || string.IsNullOrWhiteSpace(playerDto.Position ))
@@ -50,7 +51,7 @@ namespace ProjectA.Actions
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> Put(int id, PlayerDto playerDto)
+        public async Task<bool> Edit(int id, PlayerDto playerDto)
         {
             if (string.IsNullOrWhiteSpace(playerDto.PlayerName)
                 || string.IsNullOrWhiteSpace(playerDto.Position))

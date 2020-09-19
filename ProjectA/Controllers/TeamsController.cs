@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
 using ProjectA.Actions;
 using ProjectA.DTO;
+using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Controllers
 {
@@ -15,24 +16,23 @@ namespace ProjectA.Controllers
 
     public class TeamsController : ControllerBase
     {
-        private readonly EfCoreContext _context;
+        private readonly ITeamLogic _teamLogic;
 
-        public TeamsController(EfCoreContext context)
+        public TeamsController(ITeamLogic teamLogic)
         {
-            _context = context;
+            _teamLogic = teamLogic;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
         {
-            var actionObject = new TeamLogic(_context);
-            return await actionObject.Get();
+            return await _teamLogic.GetAll();
         }
+
         [HttpPost]
         public async Task<ActionResult> PostTeam(TeamDto teamDto)
         {
-            var actionObject = new TeamLogic(_context);
-            var check = await actionObject.Post(teamDto);
+            var check = await _teamLogic.Add(teamDto);
             if (!check)
             {
                 return BadRequest();
@@ -42,8 +42,7 @@ namespace ProjectA.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> PutTeams(int id, TeamDto teamDto)
         {
-            var actionObject = new TeamLogic(_context);
-            var check = await actionObject.Put(id, teamDto);
+            var check = await _teamLogic.Edit(id, teamDto);
             if (!check)
             {
                 return BadRequest();
@@ -55,8 +54,7 @@ namespace ProjectA.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTeam(int id)
         {
-            var actionObject = new TeamLogic(_context);
-            var check = await actionObject.Delete(id);
+            var check = await _teamLogic.Delete(id);
             if (!check)
             {
                 return NotFound();
