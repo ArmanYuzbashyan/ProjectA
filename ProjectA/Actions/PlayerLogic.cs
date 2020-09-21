@@ -29,19 +29,19 @@ namespace ProjectA.Actions
         public async Task<bool> Add(PlayerDto playerDto)
         {
             if (string.IsNullOrWhiteSpace(playerDto.PlayerName)
-                || string.IsNullOrWhiteSpace(playerDto.Position ))
+                || string.IsNullOrWhiteSpace(playerDto.Position))
             {
                 return false;
             }
             var playerNation = await _context.Countries.FindAsync(playerDto.NationId);
             var playerTeam = await _context.Teams.FindAsync(playerDto.TeamId);
-            if (playerNation == null)
+            if (playerNation == null || playerTeam == null)
             {
                 return false;
             }
             var player = new Player
             {
-                PlayerName = playerDto.PlayerName,
+                Name = playerDto.PlayerName,
                 Position = playerDto.Position,
                 Team = playerTeam,
                 Nation = playerNation
@@ -60,7 +60,7 @@ namespace ProjectA.Actions
             }
             var playerNation = await _context.Countries.FindAsync(playerDto.NationId);
             var playerTeam = await _context.Teams.FindAsync(playerDto.TeamId);
-            if (playerNation == null )
+            if (playerNation == null || playerTeam == null)
             {
                 return false;
             }
@@ -69,7 +69,7 @@ namespace ProjectA.Actions
             {
                 return false;
             }
-            player.PlayerName = playerDto.PlayerName;
+            player.Name = playerDto.PlayerName;
             player.Position = playerDto.Position;
             player.Team = playerTeam;
             player.Nation = playerNation;
@@ -87,8 +87,6 @@ namespace ProjectA.Actions
             _context.Players.Remove(player);
             await _context.SaveChangesAsync();
             return true;
-        }
-        
-
+        }      
     }
 }

@@ -24,13 +24,13 @@ namespace ProjectA.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
+        public async Task<ActionResult<IEnumerable<Team>>> GetAllTeams()
         {
             return await _teamLogic.GetAll();
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostTeam(TeamDto teamDto)
+        public async Task<ActionResult> AddTeam(TeamDto teamDto)
         {
             var check = await _teamLogic.Add(teamDto);
             if (!check)
@@ -40,7 +40,7 @@ namespace ProjectA.Controllers
             return Ok();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> PutTeams(int id, TeamDto teamDto)
+        public async Task<ActionResult<bool>> EditTeams(int id, TeamDto teamDto)
         {
             var check = await _teamLogic.Edit(id, teamDto);
             if (!check)

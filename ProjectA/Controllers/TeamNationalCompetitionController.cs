@@ -11,13 +11,13 @@ using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Controllers
 {
-    [Route("api/teamcompetition")]
+    [Route("api/teamtonational")]
     [ApiController]
-    public class TeamCompetitionController : ControllerBase
+    public class TeamNationalCompetitionController : ControllerBase
     {
-        private readonly ICompetitionLogic _competitionLogic;
+        private readonly INationalCompetitionLogic _competitionLogic;
 
-        public TeamCompetitionController(ICompetitionLogic competitionLogic)
+        public TeamNationalCompetitionController(INationalCompetitionLogic competitionLogic)
         {
             _competitionLogic = competitionLogic;
         }

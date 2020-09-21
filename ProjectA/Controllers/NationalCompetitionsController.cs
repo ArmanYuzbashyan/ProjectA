@@ -11,26 +11,32 @@ using ProjectA.Actions.Abstraction;
 
 namespace ProjectA.Controllers
 {
-    [Route("api/competitions")]
+    [Route("api/national")]
     [ApiController]
 
-    public class CompetitionsController : ControllerBase
+    public class NationalCompetitionsController : ControllerBase
     {
-        private readonly ICompetitionLogic _competitionLogic;
+        private readonly INationalCompetitionLogic _competitionLogic;
 
-        public CompetitionsController(ICompetitionLogic competitionLogic)
+        public NationalCompetitionsController(INationalCompetitionLogic competitionLogic)
         {
             _competitionLogic = competitionLogic;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable</*GetCompDto*/Competition>>> GetCompetitions()
+        public async Task<ActionResult<IEnumerable<NationalCompetition>>> GetNationalCompetitions()
         {
             return await _competitionLogic.GetAll();
         }
 
+        [HttpGet("{id}")] // get competition players via competition id
+        public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
+        {
+            return await _competitionLogic.GetCompetitionPlayers(id);
+        }
+
         [HttpPost]
-        public async Task<ActionResult> AddCompetitions(PostCompetitionDto competitionDto)
+        public async Task<ActionResult> AddNationalCompetitions(NationalCompetitionDto competitionDto)
         {
             var check = await _competitionLogic.Add(competitionDto);
             if (!check)
@@ -41,7 +47,7 @@ namespace ProjectA.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> EditCompetitions(int id, PostCompetitionDto competitionDto)
+        public async Task<ActionResult> EditNationalCompetitions(int id, NationalCompetitionDto competitionDto)
         {
             var check = await _competitionLogic.Edit(id,competitionDto);
             if (!check)
@@ -52,7 +58,7 @@ namespace ProjectA.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteCompetition(int id)
+        public async Task<ActionResult> DeleteNationalCompetition(int id)
         {
             var check = await _competitionLogic.Delete(id);
             if (!check)

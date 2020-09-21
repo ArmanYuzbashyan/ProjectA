@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProjectA.Models
 {
-    public class Player
+    public class Region
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Country Nation { get; set; }
-        public string Position { get; set; }
-        public Team Team { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace ProjectA.Actions.Abstraction
 {
     public interface ITeamLogic
     {
-        Task<ActionResult<IEnumerable<TeamDto>>> GetAll();
+        Task<ActionResult<IEnumerable<Team>>> GetAll();
         Task<bool> Add(TeamDto teamDto);
         Task<bool> Edit(int id, TeamDto teamDto);
         Task<bool> Delete(int id);

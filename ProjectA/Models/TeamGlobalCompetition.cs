@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace ProjectA.Models
 {
-    public class TeamCompetition
+    public class TeamGlobalCompetition
     {
         public int TeamId { get; set; }
         public int CompetitionId { get; set; }
 
         public Team Team { get; set; }
-        public Competition Competition { get; set; }
+        public GlobalCompetition Competition { get; set; }
     }
 }

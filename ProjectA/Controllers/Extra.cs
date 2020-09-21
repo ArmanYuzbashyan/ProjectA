@@ -13,22 +13,15 @@ namespace ProjectA.Controllers
 {
     [Route("api/extra")]
     [ApiController]
-    public class ExtraController : ControllerBase
+    public class Extra : ControllerBase
     {
-        private readonly ICompetitionLogic _competitionLogic;
         private readonly ITeamLogic _teamLogic;
 
-        public ExtraController(ICompetitionLogic competitionLogic, ITeamLogic teamLogic)
+        public Extra(ITeamLogic teamLogic)
         {
-            _competitionLogic = competitionLogic;
-            _teamLogic = teamLogic;
+           _teamLogic = teamLogic;
         }
-
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Player>> GetCompetitionPlayers(int id)
-        {
-            return await _competitionLogic.GetCompetitionPlayers(id);
-        }
+                
 
         [HttpPut("{id}")]
         public async Task<ActionResult<IEnumerable<Player>>> TransferPlayer(int id, Player player)

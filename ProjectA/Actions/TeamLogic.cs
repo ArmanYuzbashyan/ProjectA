@@ -18,36 +18,22 @@ namespace ProjectA.Actions
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<TeamDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Team>>> GetAll()
         {
             var teams = await _context.Teams
-                .Include(c => c.CompetitionsLink)
+                .Include(c => c.NationalCompetitionsLink)
                 .ThenInclude(c => c.Competition)
-                .Include(c =>c.TeamCountry)
+                .Include(c => c.GlobalCompetitionsLink)
+                .ThenInclude(c => c.Competition)
+                .Include(c =>c.Country)
                 .ToListAsync();
-            var teamDtos = new List<TeamDto> { };
-            foreach (var t in teams)
-            {
-                var comptetitions = new List<string> { };
-                foreach (var c in t.CompetitionsLink)
-                {
-                    comptetitions.Add(c.Competition.CompetitionName);
-                }
-                teamDtos.Add(new TeamDto
-                {
-                    TeamId = t.TeamId,
-                    TeamName = t.TeamName,
-                    ManagerName = t.ManagerName,
-                    CountryId = t.TeamCountry.CountryId,
-                    Competitions = comptetitions,
-                });
-            }
-            return  teamDtos;
+            
+            return  teams;
         }
         public async Task<bool> Add(TeamDto teamDto)
         {
-            if (string.IsNullOrWhiteSpace(teamDto.TeamName)
-                || string.IsNullOrWhiteSpace(teamDto.ManagerName))
+            if (string.IsNullOrWhiteSpace(teamDto.Name)
+                || string.IsNullOrWhiteSpace(teamDto.Manager))
             {
                 return false;
             }
@@ -58,9 +44,9 @@ namespace ProjectA.Actions
             }
             var team = new Team
             {
-                TeamName = teamDto.TeamName,
-                ManagerName = teamDto.ManagerName,
-                TeamCountry = teamCountry,
+                Name = teamDto.Name,
+                Manager = teamDto.Manager,
+                Country = teamCountry,
             };
             _context.Teams.Add(team);
             await _context.SaveChangesAsync();
@@ -68,8 +54,8 @@ namespace ProjectA.Actions
         }
         public async Task<bool> Edit(int id, TeamDto teamDto)
         {
-            if (string.IsNullOrWhiteSpace(teamDto.TeamName)
-                || string.IsNullOrWhiteSpace(teamDto.ManagerName))
+            if (string.IsNullOrWhiteSpace(teamDto.Name)
+                || string.IsNullOrWhiteSpace(teamDto.Manager))
             {
                 return false;
             }            
@@ -78,15 +64,11 @@ namespace ProjectA.Actions
             {
                 return false;
             }
-            team.TeamName = teamDto.TeamName;
-            team.ManagerName = teamDto.ManagerName;            
+            team.Name = teamDto.Name;
+            team.Manager = teamDto.Manager;            
 
             await _context.SaveChangesAsync();
             return true;
-
-            //_context.Entry(team).State = EntityState.Modified;
-            //await _context.SaveChangesAsync();
-            //return true;
         }
         public async Task<bool> Delete(int id)
         {
@@ -102,7 +84,7 @@ namespace ProjectA.Actions
         public async Task<bool> Transfer(int teamId, Player playerDto)
         {
             var team = await _context.Teams.FindAsync(teamId);
-            var player = await _context.Players.FindAsync(playerDto.PlayerId);
+            var player = await _context.Players.FindAsync(playerDto.Id);
             if (team == null || player == null)
             {
                 return false;

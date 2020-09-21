@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProjectA.Models;
 
-namespace ProjectA.Models
+namespace ProjectA.DTO
 {
-    public class Country
+    public class NationalCompetitionDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public Region Region { get; set; }
+        public int CountryId { get; set; }        
     }
 }

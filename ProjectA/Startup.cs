@@ -41,9 +41,11 @@ namespace ProjectA
 
             
             services.AddScoped<ICountryLogic, CountryLogic>();
-            services.AddScoped<ICompetitionLogic, CompetitionLogic>();
+            services.AddScoped<INationalCompetitionLogic, NationalCompetitionLogic>();
+            services.AddScoped<IGLobalCompetitionLogic, GlobalCompetitionLogic>();
             services.AddScoped<IPlayerLogic, PlayerLogic>();
             services.AddScoped<ITeamLogic, TeamLogic>();
+            services.AddScoped<IRegionLogic, RegionLogic>();
 
             services.AddSwaggerGen(c =>
             {

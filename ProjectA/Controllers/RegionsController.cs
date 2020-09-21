@@ -2,37 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectA.Models;
 using ProjectA.Actions;
-using ProjectA.DTO;
 using ProjectA.Actions.Abstraction;
+using ProjectA.Models;
 
 namespace ProjectA.Controllers
 {
-    [Route("api/players")]
+    [Route("api/regions")]
     [ApiController]
-
-    public class PlayersController : ControllerBase
+    public class RegionsController : ControllerBase
     {
-        private readonly IPlayerLogic _playerLogic;
+        private readonly IRegionLogic _regions;
 
-        public PlayersController(IPlayerLogic playerLogic)
+        public RegionsController(IRegionLogic regions)
         {
-            _playerLogic = playerLogic;
+            _regions = regions;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        public async Task<ActionResult<IEnumerable<Region>>> GetAll()
         {
-            return await _playerLogic.GetAll();
+            return await _regions.GetAll();
         }
-
+        
         [HttpPost]
-        public async Task<ActionResult> AddPlayer(PlayerDto playerDto)
+        public async Task<ActionResult<bool>> Add(Region region)
         {
-            var check = await _playerLogic.Add(playerDto);
+            var check = await _regions.Add(region);
             if (!check)
             {
                 return BadRequest();
@@ -41,9 +38,9 @@ namespace ProjectA.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, PlayerDto playerDto)
+        public async Task<IActionResult> Edit(int id, Region region)
         {
-           var check = await _playerLogic.Edit(id, playerDto);
+            var check = await _regions.Edit(id, region);
             if (!check)
             {
                 return BadRequest();
@@ -54,7 +51,7 @@ namespace ProjectA.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCountry(int id)
         {
-            var check = await _playerLogic.Delete(id);
+            var check = await _regions.Delete(id);
             if (!check)
             {
                 return NotFound();

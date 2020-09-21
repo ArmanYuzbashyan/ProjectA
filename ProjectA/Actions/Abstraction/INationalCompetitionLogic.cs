@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ProjectA.Actions.Abstraction
 {
-    public interface ICompetitionLogic
+    public interface INationalCompetitionLogic
     {
-        Task<ActionResult<IEnumerable<Competition/*GetCompDto*/>>> GetAll();
-        Task<bool> Add(PostCompetitionDto competitionDto);
-        Task<bool> Edit(int id, PostCompetitionDto competitionDto);
+        Task<ActionResult<IEnumerable<NationalCompetition>>> GetAll();
+        Task<bool> Add(NationalCompetitionDto competitionDto);
+        Task<bool> Edit(int id, NationalCompetitionDto competitionDto);
         Task<bool> Delete(int id);
         Task<bool> AddTeamToCompetition(int compId, TeamDto teamDto);
         Task<bool> RemoveTeamFromCompetition(int compId, TeamDto teamDto);

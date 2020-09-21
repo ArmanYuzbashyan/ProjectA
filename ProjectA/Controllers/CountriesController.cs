@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectA.Models;
 using ProjectA.Actions;
-
+using ProjectA.DTO;
 
 namespace ProjectA.Controllers
 {
@@ -23,15 +23,15 @@ namespace ProjectA.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<Country>>> GetAllCountries()
         {
             return await _countries.GetAll();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
+        public async Task<IActionResult> EditCountry(int id, CountryDto countryDto)
         {
-            var check = await _countries.Edit(id, country);
+            var check = await _countries.Edit(id, countryDto);
             if (!check)
             {
                 return BadRequest();
@@ -40,9 +40,9 @@ namespace ProjectA.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(Country country)
+        public async Task<ActionResult<Country>> AddCountry(CountryDto countryDto)
         {            
-            var check = await _countries.Add(country);
+            var check = await _countries.Add(countryDto);
             if (!check)
             {
                 return BadRequest();
@@ -62,114 +62,3 @@ namespace ProjectA.Controllers
         }
     }
 }
-
-
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using ProjectA.Models;
-
-//namespace ProjectA.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class CountriesController : ControllerBase
-//    {
-//        private readonly EfCoreContext _context;
-
-//        public CountriesController(EfCoreContext context)
-//        {
-//            _context = context;
-//        }
-
-//        // GET: api/Countries
-//        [HttpGet]
-//        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
-//        {
-//            return await _context.Countries.ToListAsync();
-//        }
-
-//        // GET: api/Countries/5
-//        [HttpGet("{id}")]
-//        public async Task<ActionResult<Country>> GetCountry(int id)
-//        {
-//            var country = await _context.Countries.FindAsync(id);
-
-//            if (country == null)
-//            {
-//                return NotFound();
-//            }
-
-//            return country;
-//        }
-
-//        // PUT: api/Countries/5
-//        
-//        [HttpPut("{id}")]
-//        public async Task<IActionResult> PutCountry(int id, Country country)
-//        {
-//            if (id != country.CountryId)
-//            {
-//                return BadRequest();
-//            }
-
-//            _context.Entry(country).State = EntityState.Modified;
-
-//            try
-//            {
-//                await _context.SaveChangesAsync();
-//            }
-//            catch (DbUpdateConcurrencyException)
-//            {
-//                if (!CountryExists(id))
-//                {
-//                    return NotFound();
-//                }
-//                else
-//                {
-//                    throw;
-//                }
-//            }
-
-//            return NoContent();
-//        }
-
-//        // POST: api/Countries
-//        
-//        [HttpPost]
-//        public async Task<ActionResult<Country>> PostCountry(Country country)
-//        {
-//            _context.Countries.Add(country);
-//            await _context.SaveChangesAsync();
-
-//            return CreatedAtAction("GetCountry", new { id = country.CountryId }, country);
-//        }
-
-//        // DELETE: api/Countries/5
-//        [HttpDelete("{id}")]
-//        public async Task<ActionResult<Country>> DeleteCountry(int id)
-//        {
-//            var country = await _context.Countries.FindAsync(id);
-//            if (country == null)
-//            {
-//                return NotFound();
-//            }
-
-//            _context.Countries.Remove(country);
-//            await _context.SaveChangesAsync();
-
-//            return country;
-//        }
-
-//        private bool CountryExists(int id)
-//        {
-//            return _context.Countries.Any(e => e.CountryId == id);
-//        }
-//    }
-//}

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectA.Models;
 using Microsoft.EntityFrameworkCore;
+using ProjectA.DTO;
 
 namespace ProjectA.Actions
 {
@@ -22,21 +23,31 @@ namespace ProjectA.Actions
            return await _context.Countries.ToListAsync();
         }
 
-        public async Task<bool> Add(Country country)
+        public async Task<bool> Add(CountryDto countryDto)
         {
-            if (country.CountryName == null || country.Region == null)
+            if (string.IsNullOrWhiteSpace(countryDto.Name))
             {
                 return false;
             }
+            var region = await _context.Regions.FindAsync(countryDto.RegionId);
+            if (region == null || region.Name == "World")
+            {
+                return false;
+            }
+            var country = new Country
+            {
+                Name = countryDto.Name,
+                Region = region
+            };
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> Edit(int id, Country country) ///better put function
+        public async Task<bool> Edit(int id, CountryDto countryDto)
         {
 
-            if (string.IsNullOrWhiteSpace(country.CountryName) || string.IsNullOrWhiteSpace(country.Region))
+            if (string.IsNullOrWhiteSpace(countryDto.Name))
             {
                 return false;
             }
@@ -48,8 +59,7 @@ namespace ProjectA.Actions
                 return false;
             }
             
-            dbCountry.CountryName = country.CountryName;
-            dbCountry.Region = country.Region;            
+            dbCountry.Name = countryDto.Name;                        
             await _context.SaveChangesAsync();
             return true;
         }
