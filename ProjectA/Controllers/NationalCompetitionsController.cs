@@ -67,6 +67,31 @@ namespace ProjectA.Controllers
             }
             return Ok();
         }
-       
+
+
+        [Route("[action]/{id}")]
+        [HttpPost]
+        public async Task<ActionResult<bool>> AddTeam(int id, TeamDto teamDto)
+        {
+            var check = await _competitionLogic.AddTeamToCompetition(id, teamDto);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+
+        [Route("[action]/{id}")]
+        [HttpPut]
+        public async Task<ActionResult> RemoveTeam(int id, TeamDto teamDto)
+        {
+            var check = await _competitionLogic.RemoveTeamFromCompetition(id, teamDto);
+            if (!check)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
     }
 }

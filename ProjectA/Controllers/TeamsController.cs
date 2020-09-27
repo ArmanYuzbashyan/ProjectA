@@ -61,5 +61,17 @@ namespace ProjectA.Controllers
             }
             return Ok();
         }
+
+        [Route("[action]/{id}")]
+        [HttpPut] /// transfer player from team to team
+        public async Task<ActionResult<IEnumerable<Player>>> Transfer(int id, Player player)
+        {
+            var check = await _teamLogic.Transfer(id, player);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }
